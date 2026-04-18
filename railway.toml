@@ -1,0 +1,36 @@
+# Railway Configuration for Distraction Bot Backend
+# Phase 4 — backend-billing-engineer
+#
+# This file configures the Express.js service for Railway deployment.
+# Spec: §19.3 (Railway hosting)
+
+[build]
+# Use Nixpacks for automated build environment detection
+builder = "nixpacks"
+
+[deploy]
+# Start the backend with node index.js
+startCommand = "node index.js"
+
+# Health check endpoint (§11 backend routes)
+healthcheckPath = "/health"
+
+# Timeout for health checks (in seconds)
+healthcheckTimeout = 10
+
+# Restart policy: restart on failure
+restartPolicyType = "on_failure"
+
+# Max retry attempts
+restartPolicyMaxRetries = 3
+
+# Environment variables (must be set in Railway dashboard)
+# - PORT: (optional, default 3000)
+# - STRIPE_SECRET_KEY: restricted live key with refunds:write + charges:read
+#   TODO: Health must provide this (§19.4 owner action)
+# - REVENUECAT_SECRET_KEY: server-side secret for API calls
+#   TODO: Health must provide this (Phase 4 owner action)
+# - REVENUECAT_WEBHOOK_SECRET: for webhook signature verification
+#   TODO: Health must provide this (Phase 4 owner action)
+# - JWT_SECRET: min 32 bytes random string for token signing
+#   TODO: Health must provide this (Phase 4 owner action)
