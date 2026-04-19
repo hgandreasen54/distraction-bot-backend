@@ -22,7 +22,9 @@ app.use(helmet());
 
 // Raw body parsing for webhook signature verification (must come before express.json)
 // Stores raw request body in req.rawBody for HMAC verification
+// Only applied to POST requests to avoid hanging GET healthchecks
 app.use((req, res, next) => {
+    if (req.method !== 'POST') return next();
     let rawBody = '';
     req.on('data', chunk => {
         rawBody += chunk.toString('utf8');
